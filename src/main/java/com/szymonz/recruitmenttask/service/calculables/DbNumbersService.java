@@ -1,7 +1,7 @@
 package com.szymonz.recruitmenttask.service.calculables;
 
 import com.szymonz.recruitmenttask.model.DbNumber;
-import com.szymonz.recruitmenttask.model.DbNumberRepository;
+import com.szymonz.recruitmenttask.repository.DbNumberRepository;
 
 import javassist.NotFoundException;
 
@@ -19,15 +19,11 @@ public class DbNumbersService implements Calculable<BigDecimal> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DbNumbersService.class);
     private static final int MIN = 1;
+    private final DbNumberRepository numberRepository;
 
     @Autowired
-    private DbNumberRepository numberRepository;
-
-    private DbNumber getRandomRecordIndex() throws NotFoundException {
-        long maxIndex = numberRepository.count();
-        int index = ((int) (Math.random() * (maxIndex - MIN))) + MIN;
-        Optional<DbNumber> randomNumber = numberRepository.findById(index);
-        return randomNumber.orElseThrow(() -> new NotFoundException("Number not found in DB"));
+    public DbNumbersService(DbNumberRepository numberRepository) {
+        this.numberRepository = numberRepository;
     }
 
     @Override
@@ -40,5 +36,12 @@ public class DbNumbersService implements Calculable<BigDecimal> {
             LOGGER.error("An exception occured during fetch data.", exception);
             throw exception;
         }
+    }
+
+    private DbNumber getRandomRecordIndex() throws NotFoundException {
+        long maxIndex = numberRepository.count();
+        int index = ((int) (Math.random() * (maxIndex - MIN))) + MIN;
+        Optional<DbNumber> randomNumber = numberRepository.findById(index);
+        return randomNumber.orElseThrow(() -> new NotFoundException("Number not found in DB"));
     }
 }
