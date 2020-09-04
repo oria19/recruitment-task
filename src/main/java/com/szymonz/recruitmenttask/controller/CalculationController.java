@@ -1,5 +1,6 @@
 package com.szymonz.recruitmenttask.controller;
 
+import com.szymonz.recruitmenttask.service.CalculationService;
 import com.szymonz.recruitmenttask.service.CalculationServiceImpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class CalculationController {
 
-    private final CalculationServiceImpl calculationServiceImpl;
+    private final CalculationService calculationServiceImpl;
 
     @Autowired
     public CalculationController(CalculationServiceImpl calculator) {
