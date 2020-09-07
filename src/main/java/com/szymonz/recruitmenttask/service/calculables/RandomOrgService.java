@@ -1,5 +1,7 @@
 package com.szymonz.recruitmenttask.service.calculables;
 
+import com.szymonz.recruitmenttask.exceptions.NumberNotFoundException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -10,7 +12,7 @@ import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StreamUtils;
-import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -30,7 +32,7 @@ public class RandomOrgService implements Calculable<BigDecimal> {
 
     @Override
     @Nullable
-    public BigDecimal getValue() throws Exception {
+    public BigDecimal getValue() {
         try {
             ClientHttpRequest request = requestFactory.createRequest(URI.create(ENDPOINT_ADDRESS), GET);
             ClientHttpResponse response = request.execute();
@@ -39,10 +41,9 @@ public class RandomOrgService implements Calculable<BigDecimal> {
                 String formattedResponse = new String(Arrays.copyOfRange(responseBody, 0, responseBody.length - 1)); // Cut \n sign
                 LOGGER.info("Get " + formattedResponse + " from Random.org");
                 return new BigDecimal(formattedResponse);
-            } else throw new HttpClientErrorException(response.getStatusCode());
+            } else throw new ResponseStatusException(response.getStatusCode());
         } catch (IOException ioException) {
-            LOGGER.error("Could not get the random number from random.org");
-            throw ioException;
+            throw new NumberNotFoundException("Could not get the random number from random.org");
         }
     }
 }

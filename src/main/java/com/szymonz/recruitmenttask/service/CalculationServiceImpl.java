@@ -25,7 +25,8 @@ public class CalculationServiceImpl implements CalculationService {
         this.calculables = calculables;
     }
 
-    public Number getResult() throws Exception {
+    @Override
+    public Number getResult() {
         BigDecimal result = BigDecimal.ZERO;
         for (Calculable<BigDecimal> calculable: calculables) {
             result = calculator.calculate(result, calculable.getValue());
