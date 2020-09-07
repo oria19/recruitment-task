@@ -4,8 +4,8 @@ import com.szymonz.recruitmenttask.service.CalculationService;
 import com.szymonz.recruitmenttask.service.CalculationServiceImpl;
 import com.szymonz.recruitmenttask.service.calculables.DbNumberService;
 import com.szymonz.recruitmenttask.service.calculables.RandomOrgService;
-
 import com.szymonz.recruitmenttask.service.calculators.Calculator;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -20,6 +20,7 @@ import java.math.BigDecimal;
 import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import static org.mockito.Mockito.when;
 
@@ -50,6 +51,11 @@ public class CalculationServiceImplTest {
         BigDecimal returnByServiceDbNumber = new BigDecimal("38.72");
         when(numberService.getValue()).thenReturn(returnByServiceRandomOrg);
         when(randomOrgService.getValue()).thenReturn(returnByServiceDbNumber);
+    }
+
+    @Test
+    public void contextLoad() {
+        assertNotNull(calculator);
     }
 
     @Test

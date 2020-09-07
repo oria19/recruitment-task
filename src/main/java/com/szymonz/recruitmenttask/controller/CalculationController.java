@@ -18,7 +18,7 @@ public class CalculationController {
     }
 
     @GetMapping(value = "/result")
-    public Number getResult() throws Exception {
+    public Number getResult() {
         return calculationServiceImpl.getResult();
     }
 }

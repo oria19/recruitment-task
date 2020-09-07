@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -16,7 +17,8 @@ import java.math.BigDecimal;
 
 import static java.util.Optional.of;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import static org.mockito.Mockito.when;
 
@@ -40,7 +42,7 @@ public class DbNumberServiceTest {
 
     @Test
     public void contextLoads() {
-        assertThat(dbNumberService).isNotNull();
+        assertNotNull(dbNumberService);
     }
 
     @Test
@@ -55,6 +57,6 @@ public class DbNumberServiceTest {
         BigDecimal valueGetFromDB = dbNumberService.getValue();
 
         // then
-        assertThat(valueGetFromDB.equals(BigDecimal.TEN));
+        assertEquals(valueGetFromDB, BigDecimal.TEN);
     }
 }

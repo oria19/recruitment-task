@@ -9,7 +9,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.math.BigDecimal;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest
 public class SumCalculatorTest {
@@ -23,7 +24,7 @@ public class SumCalculatorTest {
 
     @Test
     public void contextLoads() {
-        assertThat(sumCalculator).isNotNull();
+        assertNotNull(sumCalculator);
     }
 
     @Test
@@ -37,7 +38,6 @@ public class SumCalculatorTest {
         BigDecimal result = sumCalculator.calculate(arg1, arg2);
 
         // then
-        assertThat(result.equals(expectedResult));
-
+        assertEquals(result, expectedResult);
     }
 }
