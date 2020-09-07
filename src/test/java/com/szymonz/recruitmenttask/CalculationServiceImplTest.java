@@ -1,38 +1,58 @@
 package com.szymonz.recruitmenttask;
 
+import com.szymonz.recruitmenttask.service.CalculationService;
 import com.szymonz.recruitmenttask.service.CalculationServiceImpl;
 import com.szymonz.recruitmenttask.service.calculables.Calculable;
 import com.szymonz.recruitmenttask.service.calculables.DbNumberService;
 import com.szymonz.recruitmenttask.service.calculables.RandomOrgService;
-import com.szymonz.recruitmenttask.service.calculators.SumCalculator;
-import org.junit.jupiter.api.BeforeAll;
+
+import com.szymonz.recruitmenttask.service.calculators.Calculator;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.event.annotation.BeforeTestMethod;
 
 import java.math.BigDecimal;
+
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
 public class CalculationServiceImplTest {
 
-    private final List<Calculable<BigDecimal>> calculables = new ArrayList<>(2);
-    private final SumCalculator calculator = new SumCalculator();
-    private final CalculationServiceImpl calculationService = new CalculationServiceImpl(calculator, calculables);
+    @Mock
+    private final DbNumberService numberService;
+    @Mock
+    private final RandomOrgService randomOrgService;
 
-    @BeforeTestMethod
+    private final Calculator<BigDecimal> calculator;
+
+    private CalculationService calculationService;
+
+    @Autowired
+    public CalculationServiceImplTest(DbNumberService numberService, RandomOrgService randomOrgService, Calculator<BigDecimal> calculator) {
+        this.calculator = calculator;
+        this.numberService = numberService;
+        this.randomOrgService = randomOrgService;
+    }
+
+    @BeforeEach
     public void before() {
+        MockitoAnnotations.initMocks(this);
+        this.calculationService = new CalculationServiceImpl(calculator, Arrays.asList(numberService, randomOrgService));
         BigDecimal returnByServiceRandomOrg = new BigDecimal("45.89");
         BigDecimal returnByServiceDbNumber = new BigDecimal("38.72");
-        calculables.add(mock(RandomOrgService.class));
-        calculables.add(mock(DbNumberService.class));
-        when(calculables.get(0).getValue()).thenReturn(returnByServiceRandomOrg);
-        when(calculables.get(1).getValue()).thenReturn(returnByServiceDbNumber);
+        when(numberService.getValue()).thenReturn(returnByServiceRandomOrg);
+        when(randomOrgService.getValue()).thenReturn(returnByServiceDbNumber);
     }
 
     @Test
@@ -45,6 +65,6 @@ public class CalculationServiceImplTest {
         Number result = calculationService.getResult();
 
         // then
-        assertThat(result.equals(expectedResult));
+        assertEquals(result, expectedResult);
     }
 }
