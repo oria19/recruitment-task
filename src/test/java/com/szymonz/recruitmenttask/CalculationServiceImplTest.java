@@ -2,7 +2,6 @@ package com.szymonz.recruitmenttask;
 
 import com.szymonz.recruitmenttask.service.CalculationService;
 import com.szymonz.recruitmenttask.service.CalculationServiceImpl;
-import com.szymonz.recruitmenttask.service.calculables.Calculable;
 import com.szymonz.recruitmenttask.service.calculables.DbNumberService;
 import com.szymonz.recruitmenttask.service.calculables.RandomOrgService;
 
@@ -18,9 +17,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.math.BigDecimal;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
