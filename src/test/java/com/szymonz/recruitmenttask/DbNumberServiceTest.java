@@ -4,8 +4,11 @@ import com.szymonz.recruitmenttask.model.DbNumber;
 import com.szymonz.recruitmenttask.repository.DbNumberRepository;
 import com.szymonz.recruitmenttask.service.calculables.DbNumberService;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -15,18 +18,24 @@ import static java.util.Optional.of;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
 public class DbNumberServiceTest {
 
     private final DbNumberService dbNumberService;
-    private final DbNumberRepository numberRepository = mock(DbNumberRepository.class);
+    @Mock
+    private final DbNumberRepository numberRepository;
 
     @Autowired
-    public DbNumberServiceTest(DbNumberService dbNumberService) {
+    public DbNumberServiceTest(DbNumberService dbNumberService, DbNumberRepository numberRepository) {
         this.dbNumberService = dbNumberService;
+        this.numberRepository = numberRepository;
+    }
+
+    @BeforeEach
+    public void before() {
+        MockitoAnnotations.initMocks(this);
     }
 
     @Test
